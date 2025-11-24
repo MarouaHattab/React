@@ -1,13 +1,13 @@
-import useCharactersStore from '../zustand/useCharactersStore';
-
 function Header() {
-  const likedIds = useCharactersStore(state => state.likedIds);
-
   return (
     <header className="header">
-      <h1>Rick & Morty Characters (Zustand)</h1>
-      <div className="likes-badge">
-        {likedIds.length} personnages likés
+      <div className="header-content">
+        <h1 className="header-title">
+          <span className="header-icon">🎬</span>
+          Movie Database
+          <span className="header-badge">Zustand</span>
+        </h1>
+        <p className="header-subtitle">Discover and save your favorite movies</p>
       </div>
     </header>
   );

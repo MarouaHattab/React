@@ -1,21 +1,36 @@
-import { useCharacters } from '../context/CharactersContext';
+import { useMovies } from '../context/MoviesContext';
+import { GENRES } from '../utils/tmdbApi';
 
 function FilterBar() {
-  const { filter, setFilter } = useCharacters();
-
-  const filters = ['all', 'alive', 'dead', 'unknown'];
+  const { selectedGenre, setSelectedGenre, searchQuery, setSearchQuery } = useMovies();
 
   return (
     <div className="filter-bar">
-      {filters.map(f => (
-        <button
-          key={f}
-          className={`filter-btn ${filter === f ? 'active' : ''}`}
-          onClick={() => setFilter(f)}
+      <div className="search-box">
+        <input
+          type="text"
+          placeholder="🔍 Search movies..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="search-input"
+        />
+      </div>
+      
+      <div className="genre-filter">
+        <label className="filter-label">Filter by Genre:</label>
+        <select
+          value={selectedGenre || ''}
+          onChange={(e) => setSelectedGenre(e.target.value ? Number(e.target.value) : null)}
+          className="genre-select"
         >
-          {f.charAt(0).toUpperCase() + f.slice(1)}
-        </button>
-      ))}
+          <option value="">All Genres</option>
+          {GENRES.map(genre => (
+            <option key={genre.id} value={genre.id}>
+              {genre.name}
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
   );
 }

@@ -1,16 +1,16 @@
 import Header from "./components-redux/Header";
 import FilterBar from "./components-redux/FilterBar";
-import CharacterGrid from "./components-redux/CharacterGrid";
+import MovieGrid from "./components-redux/MovieGrid";
 import FavoritesSidebar from "./components-redux/FavoritesSidebar";
 
 function AppRedux() {
   return (
-    <div>
+    <div className="app">
       <Header />
       <div className="main-container">
-        <div>
+        <div className="content-area">
           <FilterBar />
-          <CharacterGrid />
+          <MovieGrid />
         </div>
         <FavoritesSidebar />
       </div>

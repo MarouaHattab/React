@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
-import { CharactersProvider } from './context/CharactersContext';
+import { MoviesProvider } from './context/MoviesContext';
 import AppContext from './AppContext';
 import AppRedux from './AppRedux';
 import AppZustand from './AppZustand';
-import './App.css';
+import './styles.css';
 
 function App() {
   const [version, setVersion] = useState('redux'); // 'context', 'redux', or 'zustand'
@@ -31,7 +31,8 @@ function App() {
           fontWeight: '600', 
           marginBottom: '5px',
           textAlign: 'center',
-          opacity: 0.9
+          opacity: 0.9,
+          color: '#fff'
         }}>
           State Management
         </div>
@@ -92,9 +93,9 @@ function App() {
 
       {/* Render appropriate version */}
       {version === 'context' && (
-        <CharactersProvider>
+        <MoviesProvider>
           <AppContext />
-        </CharactersProvider>
+        </MoviesProvider>
       )}
 
       {version === 'redux' && (

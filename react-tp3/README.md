@@ -1,548 +1,509 @@
-# 🎓 TP3 React - Gestion d'État Globale
+# 🎬 MovieDB Explorer - Projet Comparatif
 
-**École Polytechnique de Sousse**  
-
----
+Une application de découverte de films utilisant l'API TMDb, implémentée avec **trois solutions de gestion d'état différentes** : Context API, Redux Toolkit, et Zustand.
 
 ## 📋 Table des Matières
 
-1. [Présentation du Projet](#présentation-du-projet)
-2. [Démo](#démo)
-3. [Fonctionnalités](#fonctionnalités)
-4. [Installation et Lancement](#installation-et-lancement)
-5. [Architecture du Projet](#architecture-du-projet)
-6. [Les Trois Approches](#les-trois-approches)
-   - [Context API](#1️⃣-context-api)
-   - [Redux Toolkit](#2️⃣-redux-toolkit)
-   - [Zustand](#3️⃣-zustand)
-7. [Comparaison Détaillée](#comparaison-détaillée)
-8. [Résultats des Tests](#résultats-des-tests)
-9. [Technologies Utilisées](#technologies-utilisées)
+- [Aperçu](#aperçu)
+- [Fonctionnalités](#fonctionnalités)
+- [Technologies Utilisées](#technologies-utilisées)
+- [Installation](#installation)
+- [Structure du Projet](#structure-du-projet)
+- [Comparaison des Solutions](#comparaison-des-solutions)
+- [Captures d'Écran](#captures-décran)
+- [API TMDb](#api-tmdb)
 
 ---
 
-## 🎯 Présentation du Projet
+## 🎯 Aperçu
 
-Ce projet est un **TP pratique** réalisé dans le cadre du cours de React à l'**École Polytechnique de Sousse**. Il démontre et compare **trois approches différentes** de gestion d'état global en React :
+Ce projet est une application web moderne permettant de découvrir des films populaires, de les rechercher par titre, de les filtrer par genre, et de gérer une liste de favoris. L'objectif principal est de **comparer trois approches différentes de gestion d'état** dans React.
 
-- ✅ **Context API** (solution native React)
-- ✅ **Redux Toolkit** (standard de l'industrie)
-- ✅ **Zustand** (solution moderne et légère)
+### Versions Implémentées
 
-L'application affiche les personnages de **Rick & Morty** avec la possibilité de :
-- 👍 Liker/Unliker des personnages
-- 🔍 Filtrer par statut (Vivant, Mort, Inconnu)
-- ⭐ Voir ses favoris dans une barre latérale
-- 🔄 Basculer entre les trois implémentations en temps réel
-
----
-
-## 🎬 Démo
-
-![Demo de l'application](demo/demo.gif)
-
-*Démonstration des trois versions : Context API, Redux Toolkit et Zustand*
-
-### Utilisation du Sélecteur de Version
-
-Un **panneau flottant** en haut à droite permet de basculer entre les trois implémentations :
-
-```
-┌─────────────────────────┐
-│  State Management       │
-├─────────────────────────┤
-│ [Context] [Redux] [Zustand] │
-└─────────────────────────┘
-```
-
-**Important :** Chaque version maintient son propre état indépendant !
+1. **Context API** - Solution native de React
+2. **Redux Toolkit** - Bibliothèque de gestion d'état robuste
+3. **Zustand** - Solution légère et moderne
 
 ---
 
 ## ✨ Fonctionnalités
 
 ### Fonctionnalités Principales
-- 📡 **Récupération de données** depuis l'API Rick & Morty
-- 🎴 **Affichage en grille** des personnages avec images
-- ❤️ **Système de likes** avec animation heartbeat
-- 🔍 **Filtrage dynamique** par statut
-- ⭐ **Barre latérale** des favoris
-- ⏳ **États de chargement** avec animations
-- 📱 **Design responsive** pour tous les écrans
 
-### Design UI/UX
-- 🎨 **Thème sombre moderne** avec dégradés
-- ✨ **Effets glassmorphism** sur les cartes
-- 🎭 **Animations fluides** (slide-up, hover, heartbeat)
-- 💫 **Indicateurs de statut pulsants** (Vivant/Mort/Inconnu)
-- 🎪 **Scrollbar personnalisée** avec dégradé
-- 🌊 **Effets de survol** interactifs
-
----
-
-## 🚀 Installation et Lancement
-
-### Prérequis
-- Node.js (v16 ou supérieur)
-- npm ou yarn
-
-### Installation
-
-```bash
-# Cloner le projet
-cd react-tp3
-
-# Installer les dépendances
-npm install
-```
-
-### Lancement
-
-```bash
-# Démarrer le serveur de développement
-npm run dev
-```
-
-L'application sera accessible sur `http://localhost:5173`
-
-### Dépendances Installées
-
-```json
-{
-  "@reduxjs/toolkit": "^2.x.x",
-  "react-redux": "^9.x.x",
-  "zustand": "^4.x.x"
-}
-```
-
----
-
-## 📁 Architecture du Projet
-
-```
-react-tp3/
-├── src/
-│   ├── context/                    # 📦 Context API
-│   │   └── CharactersContext.jsx
-│   │
-│   ├── redux/                      # 📦 Redux Toolkit
-│   │   ├── store.js
-│   │   └── charactersSlice.js
-│   │
-│   ├── zustand/                    # 📦 Zustand
-│   │   └── useCharactersStore.js
-│   │
-│   ├── components-context/         # 🧩 Composants Context
-│   │   ├── Header.jsx
-│   │   ├── FilterBar.jsx
-│   │   ├── CharacterCard.jsx
-│   │   ├── CharacterGrid.jsx
-│   │   └── FavoritesSidebar.jsx
-│   │
-│   ├── components-redux/           # 🧩 Composants Redux
-│   │   └── ... (même structure)
-│   │
-│   ├── components-zustand/         # 🧩 Composants Zustand
-│   │   └── ... (même structure)
-│   │
-│   ├── styles/                     # 🎨 Styles CSS
-│   │   └── styles.css
-│   │
-│   ├── App.jsx                     # 🔄 App principal avec sélecteur
-│   ├── AppContext.jsx              # Version Context
-│   ├── AppRedux.jsx                # Version Redux
-│   ├── AppZustand.jsx              # Version Zustand
-│   └── main.jsx                    # Point d'entrée
-│
-├── README.md
-└── package.json
-```
-
----
-
-## 🔍 Les Trois Approches
-
-## 1️⃣ Context API
-
-### 📖 Concept
-
-**Context API** est une solution **native de React** pour partager des données entre composants sans avoir à passer des props à chaque niveau (prop drilling).
-
-### 🏗️ Architecture
-
-```javascript
-// 1. Créer le Context
-const CharactersContext = createContext();
-
-// 2. Créer le Provider
-export const CharactersProvider = ({ children }) => {
-  const [characters, setCharacters] = useState([]);
-  const [likedIds, setLikedIds] = useState([]);
-  
-  const toggleLike = (id) => {
-    setLikedIds(prev => 
-      prev.includes(id) 
-        ? prev.filter(i => i !== id)
-        : [...prev, id]
-    );
-  };
-  
-  return (
-    <CharactersContext.Provider value={{ characters, likedIds, toggleLike }}>
-      {children}
-    </CharactersContext.Provider>
-  );
-};
-
-// 3. Utiliser dans les composants
-const { likedIds, toggleLike } = useCharacters();
-```
-
-### ✅ Avantages
-- ✔️ **Natif à React** - Aucune dépendance externe
-- ✔️ **Simple à comprendre** - Courbe d'apprentissage douce
-- ✔️ **Parfait pour petits projets** - Pas de configuration complexe
-- ✔️ **Léger** - 0 KB supplémentaire
-
-### ❌ Inconvénients
-- ❌ **Re-rendus non optimisés** - Tous les consommateurs se re-rendent
-- ❌ **Nécessite un Provider** - Wrapping obligatoire
-- ❌ **Boilerplate moyen** - Pour des états complexes
-- ❌ **Pas de DevTools** - Difficile à déboguer
-
-### 📊 Cas d'Usage Idéal
-- Applications petites à moyennes
-- État simple à partager
-- Équipe débutante en React
-- Pas besoin de debugging avancé
-
----
-
-## 2️⃣ Redux Toolkit
-
-### 📖 Concept
-
-**Redux Toolkit** est la **solution officielle** et recommandée pour utiliser Redux. C'est le **standard de l'industrie** pour la gestion d'état dans les grandes applications React.
-
-### 🏗️ Architecture
-
-```javascript
-// 1. Créer le Slice
-const charactersSlice = createSlice({
-  name: 'characters',
-  initialState: {
-    characters: [],
-    likedIds: [],
-    loading: false
-  },
-  reducers: {
-    toggleLike: (state, action) => {
-      const id = action.payload;
-      if (state.likedIds.includes(id)) {
-        state.likedIds = state.likedIds.filter(i => i !== id);
-      } else {
-        state.likedIds.push(id);
-      }
-    }
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchCharacters.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(fetchCharacters.fulfilled, (state, action) => {
-        state.characters = action.payload;
-        state.loading = false;
-      });
-  }
-});
-
-// 2. Configurer le Store
-const store = configureStore({
-  reducer: {
-    characters: charactersReducer
-  }
-});
-
-// 3. Utiliser dans les composants
-const likedIds = useSelector(selectLikedIds);
-const dispatch = useDispatch();
-dispatch(toggleLike(id));
-```
-
-### ✅ Avantages
-- ✔️ **Standard de l'industrie** - Utilisé par les grandes entreprises
-- ✔️ **DevTools excellents** - Time-travel debugging
-- ✔️ **Gestion async intégrée** - createAsyncThunk
-- ✔️ **Re-rendus optimisés** - Grâce aux selectors
-- ✔️ **Middleware puissant** - Extensible facilement
-- ✔️ **TypeScript excellent** - Support de types robuste
-
-### ❌ Inconvénients
-- ❌ **Boilerplate important** - Plus de code à écrire
-- ❌ **Courbe d'apprentissage** - Concepts à maîtriser
-- ❌ **Taille du bundle** - ~12 KB supplémentaires
-- ❌ **Nécessite un Provider** - Configuration initiale
-
-### 📊 Cas d'Usage Idéal
-- Applications d'entreprise complexes
-- Logique métier sophistiquée
-- Besoin de debugging avancé
-- Équipe expérimentée avec Redux
-- Projets à long terme
-
----
-
-## 3️⃣ Zustand
-
-### 📖 Concept
-
-**Zustand** (allemand pour "état") est une solution **moderne et minimaliste** de gestion d'état. Elle combine la **simplicité de Context** avec les **performances de Redux**.
-
-### 🏗️ Architecture
-
-```javascript
-// 1. Créer le Store (un seul fichier !)
-const useCharactersStore = create((set, get) => ({
-  // État
-  characters: [],
-  likedIds: [],
-  loading: false,
-  
-  // Actions
-  toggleLike: (id) => {
-    set((state) => ({
-      likedIds: state.likedIds.includes(id)
-        ? state.likedIds.filter(i => i !== id)
-        : [...state.likedIds, id]
-    }));
-  },
-  
-  fetchCharacters: async () => {
-    set({ loading: true });
-    const response = await fetch('https://api.example.com/data');
-    const data = await response.json();
-    set({ characters: data.results, loading: false });
-  }
-}));
-
-// 2. Utiliser dans les composants (PAS DE PROVIDER !)
-const likedIds = useCharactersStore(state => state.likedIds);
-const toggleLike = useCharactersStore(state => state.toggleLike);
-```
-
-### ✅ Avantages
-- ✔️ **Ultra léger** - Seulement ~1 KB
-- ✔️ **Pas de Provider** - Utilisation directe
-- ✔️ **Boilerplate minimal** - Moins de code
-- ✔️ **API simple** - Facile à apprendre
-- ✔️ **Performances excellentes** - Re-rendus optimisés
-- ✔️ **DevTools disponibles** - Via middleware
-- ✔️ **TypeScript friendly** - Bon support des types
-
-### ❌ Inconvénients
-- ❌ **Écosystème plus petit** - Moins de ressources
-- ❌ **Moins de middleware** - Par rapport à Redux
-- ❌ **Moins connu** - Équipes peuvent ne pas connaître
-
-### 📊 Cas d'Usage Idéal
-- Applications modernes de toute taille
-- Besoin de simplicité + performance
-- Projets où Redux est trop lourd
-- Équipes qui veulent du code minimal
-- Prototypes et MVPs rapides
-
----
-
-## 📊 Comparaison Détaillée
-
-### Tableau Comparatif
-
-| Critère | Context API | Redux Toolkit | Zustand |
-|---------|-------------|---------------|---------|
-| **Taille du Bundle** | 0 KB (natif) | ~12 KB | ~1 KB |
-| **Courbe d'Apprentissage** | ⭐⭐ Facile | ⭐⭐⭐⭐ Difficile | ⭐⭐ Facile |
-| **Boilerplate** | Moyen | Élevé | Minimal |
-| **Performances** | ⚠️ Moyen* | ✅ Excellent | ✅ Excellent |
-| **DevTools** | ❌ Non | ✅ Excellent | ✅ Bon |
-| **Provider Requis** | ✅ Oui | ✅ Oui | ❌ Non |
-| **Gestion Async** | Manuel | ✅ Intégré | Manuel |
-| **TypeScript** | Bon | Excellent | Bon |
-| **Middleware** | ❌ Non | ✅ Oui | ✅ Oui |
-| **Popularité** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
-
-*Peut être optimisé avec React.memo
-
-### Comparaison de Code
-
-#### Lire l'État
-
-**Context API:**
-```javascript
-const { likedIds, characters } = useCharacters();
-// ⚠️ Re-rend si N'IMPORTE QUELLE valeur du context change
-```
-
-**Redux Toolkit:**
-```javascript
-const likedIds = useSelector(selectLikedIds);
-const characters = useSelector(selectCharacters);
-// ✅ Re-rend SEULEMENT si la valeur sélectionnée change
-```
-
-**Zustand:**
-```javascript
-const likedIds = useCharactersStore(state => state.likedIds);
-const characters = useCharactersStore(state => state.characters);
-// ✅ Re-rend SEULEMENT si la valeur sélectionnée change
-```
-
-#### Mettre à Jour l'État
-
-**Context API:**
-```javascript
-const { toggleLike } = useCharacters();
-toggleLike(id);
-```
-
-**Redux Toolkit:**
-```javascript
-const dispatch = useDispatch();
-dispatch(toggleLike(id));
-```
-
-**Zustand:**
-```javascript
-const toggleLike = useCharactersStore(state => state.toggleLike);
-toggleLike(id);
-```
-
-### Quantité de Code (pour les mêmes fonctionnalités)
-
-| Métrique | Context | Redux | Zustand |
-|----------|---------|-------|---------|
-| **Fichiers de configuration** | 1 | 2 | 1 |
-| **Lignes de code (store)** | ~65 | ~70 | ~50 |
-| **Lignes de code (composant)** | ~15 | ~18 | ~12 |
-| **Setup Provider** | Oui | Oui | Non |
-
----
-
-## 🧪 Résultats des Tests
-
-### Test 1: Performance des Re-rendus
-
-**Scénario:** Liker un personnage parmi 100 affichés
-
-| Solution | Composants Re-rendus | Temps (ms) |
-|----------|---------------------|------------|
-| **Context API (naïf)** | ~102 | 45ms |
-| **Context API (optimisé)** | ~3 | 12ms |
-| **Redux Toolkit** | ~2 | 8ms |
-| **Zustand** | ~2 | 7ms |
-
-**Conclusion:** Redux et Zustand offrent les meilleures performances out-of-the-box.
-
-### Test 2: Taille du Bundle
-
-| Solution | Taille Ajoutée |
-|----------|----------------|
-| **Context API** | 0 KB |
-| **Redux Toolkit** | 11.8 KB (gzipped) |
-| **Zustand** | 1.1 KB (gzipped) |
-
-**Conclusion:** Zustand est le meilleur compromis taille/fonctionnalités.
-
-### Test 3: Temps de Développement
-
-**Tâche:** Implémenter le système de likes complet
-
-| Solution | Temps Estimé | Difficulté |
-|----------|--------------|------------|
-| **Context API** | ~2h | Moyenne |
-| **Redux Toolkit** | ~3h | Élevée |
-| **Zustand** | ~1h | Faible |
-
-**Conclusion:** Zustand est le plus rapide à implémenter.
-
-### Test 4: Expérience Développeur
-
-**Critères évalués:** Facilité de debug, clarté du code, documentation
-
-| Solution | Debug | Clarté | Docs | Note Globale |
-|----------|-------|--------|------|--------------|
-| **Context API** | 6/10 | 8/10 | 9/10 | 7.7/10 |
-| **Redux Toolkit** | 10/10 | 7/10 | 10/10 | 9/10 |
-| **Zustand** | 8/10 | 9/10 | 8/10 | 8.3/10 |
-
-**Conclusion:** Redux excelle en debugging, Zustand en simplicité.
-
----
-
-## 🎯 Recommandations
-
-### Utilisez **Context API** si :
-- ✅ Vous débutez en React
-- ✅ Votre application est petite/moyenne
-- ✅ Vous voulez éviter les dépendances
-- ✅ L'état ne change pas fréquemment
-
-### Utilisez **Redux Toolkit** si :
-- ✅ Application d'entreprise complexe
-- ✅ Besoin de debugging avancé
-- ✅ Logique métier sophistiquée
-- ✅ Équipe expérimentée avec Redux
-- ✅ Projet à long terme avec évolution
-
-### Utilisez **Zustand** si :
-- ✅ Vous voulez simplicité + performance
-- ✅ Application moderne de toute taille
-- ✅ Redux vous semble trop lourd
-- ✅ Vous préférez moins de boilerplate
-- ✅ Prototypage rapide
+- ✅ **Chargement des films populaires** depuis l'API TMDb
+- ✅ **Système de favoris** avec icône étoile interactive
+- ✅ **Filtrage par genre** avec sélecteur dropdown
+- ✅ **Recherche par titre** avec debouncing (500ms)
+- ✅ **Affichage des favoris** dans une sidebar dédiée
+- ✅ **Interface responsive** adaptée à tous les écrans
+- ✅ **Design moderne** avec glassmorphism et animations
+
+### Fonctionnalités Techniques
+
+- 🔄 Gestion d'état synchronisée entre les trois versions
+- 🎨 CSS commun partagé entre toutes les versions
+- ⚡ Optimisation des performances (lazy loading des images)
+- 🔍 Recherche avec debouncing pour réduire les appels API
+- 📱 Design responsive (mobile, tablette, desktop)
+- 🎭 Animations et transitions fluides
 
 ---
 
 ## 🛠️ Technologies Utilisées
 
-- **React 18** - Bibliothèque UI
-- **Vite** - Build tool moderne
-- **Redux Toolkit** - Gestion d'état
-- **Zustand** - Gestion d'état
-- **Rick and Morty API** - Source de données
-- **CSS3** - Styles avec animations
+### Core
+
+- **React 19.2.0** - Bibliothèque UI
+- **Vite 7.2.2** - Build tool et dev server
+- **JavaScript (ES6+)** - Langage de programmation
+
+### Gestion d'État
+
+- **Context API** - Solution native React
+- **Redux Toolkit 2.11.0** - Gestion d'état avec Redux
+- **Zustand 5.0.8** - Gestion d'état légère
+
+### API
+
+- **TMDb API** - The Movie Database API
+- **Fetch API** - Pour les requêtes HTTP
+
+### Styling
+
+- **CSS3** - Avec variables CSS, Grid, Flexbox
+- **Glassmorphism** - Effets de verre moderne
+- **Animations CSS** - Transitions et keyframes
 
 ---
 
-## 📚 Ressources
+## 📦 Installation
 
-- [Documentation React Context](https://react.dev/reference/react/useContext)
-- [Documentation Redux Toolkit](https://redux-toolkit.js.org/)
-- [Documentation Zustand](https://github.com/pmndrs/zustand)
-- [Rick and Morty API](https://rickandmortyapi.com/)
+### Prérequis
+
+- Node.js (v18 ou supérieur)
+- npm ou yarn
+- Clé API TMDb (déjà incluse dans `.env`)
+
+### Étapes d'Installation
+
+```bash
+# 1. Cloner le repository
+git clone <repository-url>
+cd react-tp3
+
+# 2. Installer les dépendances
+npm install
+
+# 3. Vérifier le fichier .env
+# Le fichier .env contient déjà la clé API TMDb
+# VITE_TMDB_API_KEY=b85b4d20***686***8d03381ooo
+
+# 4. Lancer le serveur de développement
+npm run dev
+
+# 5. Ouvrir dans le navigateur
+# http://localhost:5173
+```
+
+### Scripts Disponibles
+
+```bash
+npm run dev      # Lancer le serveur de développement
+npm run build    # Créer un build de production
+npm run preview  # Prévisualiser le build de production
+npm run lint     # Vérifier le code avec ESLint
+```
 
 ---
 
-## 👨‍🎓 Auteur
+## 📁 Structure du Projet
 
-**TP3 React - École Polytechnique de Sousse**
-
-Projet réalisé dans le cadre du cours de développement web avec React, démontrant la maîtrise de trois approches différentes de gestion d'état global.
+```
+react-tp3/
+├── src/
+│   ├── components-context/       # Composants Context API
+│   │   ├── Header.jsx
+│   │   ├── FilterBar.jsx
+│   │   ├── MovieCard.jsx
+│   │   ├── MovieGrid.jsx
+│   │   └── FavoritesSidebar.jsx
+│   │
+│   ├── components-redux/          # Composants Redux
+│   │   ├── Header.jsx
+│   │   ├── FilterBar.jsx
+│   │   ├── MovieCard.jsx
+│   │   ├── MovieGrid.jsx
+│   │   └── FavoritesSidebar.jsx
+│   │
+│   ├── components-zustand/        # Composants Zustand
+│   │   ├── Header.jsx
+│   │   ├── FilterBar.jsx
+│   │   ├── MovieCard.jsx
+│   │   ├── MovieGrid.jsx
+│   │   └── FavoritesSidebar.jsx
+│   │
+│   ├── context/                   # Context API
+│   │   └── MoviesContext.jsx
+│   │
+│   ├── redux/                     # Redux Toolkit
+│   │   ├── store.js
+│   │   └── moviesSlice.js
+│   │
+│   ├── zustand/                   # Zustand
+│   │   └── useMoviesStore.js
+│   │
+│   ├── utils/                     # Utilitaires
+│   │   └── tmdbApi.js
+│   │
+│   ├── App.jsx                    # Composant principal avec switcher
+│   ├── AppContext.jsx             # App Context API
+│   ├── AppRedux.jsx               # App Redux
+│   ├── AppZustand.jsx             # App Zustand
+│   ├── main.jsx                   # Point d'entrée
+│   └── styles.css                 # CSS commun
+│
+├── .env                           # Variables d'environnement
+├── package.json                   # Dépendances
+├── vite.config.js                 # Configuration Vite
+└── README.md                      # Documentation
+```
 
 ---
 
-## 📝 Conclusion
+## 🔍 Comparaison des Solutions
 
-Ce projet démontre qu'il n'y a **pas de solution universelle** en gestion d'état. Le choix dépend de :
+### 1️⃣ Context API
 
-- 📏 **Taille du projet**
-- 👥 **Expérience de l'équipe**
-- ⚡ **Besoins en performance**
-- 🔧 **Complexité de la logique métier**
-- 📦 **Contraintes de bundle size**
+#### ✅ Avantages
 
-**Pour ce TP :** Les trois solutions sont fonctionnelles et démontrent une compréhension approfondie de la gestion d'état en React.
+- **Natif à React** - Pas de dépendance externe
+- **Simple à comprendre** - Courbe d'apprentissage faible
+- **Léger** - Aucun bundle supplémentaire
+- **Parfait pour les petits projets** - Idéal pour des états simples
+
+#### ❌ Inconvénients
+
+- **Performance** - Re-renders potentiellement excessifs
+- **Boilerplate** - Nécessite Provider et Consumer
+- **Debugging** - Moins d'outils de développement
+- **Scalabilité** - Difficile pour les grandes applications
+
+#### 💻 Exemple de Code
+
+```jsx
+// MoviesContext.jsx
+const MoviesContext = createContext();
+
+export const MoviesProvider = ({ children }) => {
+  const [movies, setMovies] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+  
+  const toggleFavorite = (movieId) => {
+    setFavorites(prev => 
+      prev.includes(movieId) 
+        ? prev.filter(id => id !== movieId)
+        : [...prev, movieId]
+    );
+  };
+  
+  return (
+    <MoviesContext.Provider value={{ movies, favorites, toggleFavorite }}>
+      {children}
+    </MoviesContext.Provider>
+  );
+};
+
+// Utilisation dans un composant
+const { toggleFavorite, favorites } = useMovies();
+```
+
+#### 📊 Métriques
+
+- **Lignes de code** : ~110 lignes (MoviesContext.jsx)
+- **Bundle size** : 0 KB (natif)
+- **Complexité** : ⭐⭐ (2/5)
+- **Performance** : ⭐⭐⭐ (3/5)
 
 ---
 
-**🎓 École Polytechnique de Sousse - 2024/2025**
+### 2️⃣ Redux Toolkit
+
+#### ✅ Avantages
+
+- **Prévisible** - Flux de données unidirectionnel
+- **DevTools** - Excellents outils de debugging (Redux DevTools)
+- **Middleware** - Support pour async, logging, etc.
+- **Scalable** - Parfait pour les grandes applications
+- **Time-travel debugging** - Historique des actions
+
+#### ❌ Inconvénients
+
+- **Boilerplate** - Plus de code à écrire
+- **Courbe d'apprentissage** - Concepts à maîtriser (actions, reducers, slices)
+- **Bundle size** - Augmente la taille du bundle
+- **Overkill** - Peut être excessif pour les petits projets
+
+#### 💻 Exemple de Code
+
+```jsx
+// moviesSlice.js
+const moviesSlice = createSlice({
+  name: 'movies',
+  initialState: {
+    movies: [],
+    favorites: [],
+  },
+  reducers: {
+    toggleFavorite: (state, action) => {
+      const movieId = action.payload;
+      if (state.favorites.includes(movieId)) {
+        state.favorites = state.favorites.filter(id => id !== movieId);
+      } else {
+        state.favorites.push(movieId);
+      }
+    },
+  },
+});
+
+// Utilisation dans un composant
+const dispatch = useDispatch();
+const favorites = useSelector(selectFavorites);
+dispatch(toggleFavorite(movieId));
+```
+
+#### 📊 Métriques
+
+- **Lignes de code** : ~120 lignes (moviesSlice.js + store.js)
+- **Bundle size** : ~15 KB (gzipped)
+- **Complexité** : ⭐⭐⭐⭐ (4/5)
+- **Performance** : ⭐⭐⭐⭐⭐ (5/5)
+
+---
+
+### 3️⃣ Zustand
+
+#### ✅ Avantages
+
+- **Minimaliste** - API très simple
+- **Léger** - Très petit bundle size
+- **Pas de Provider** - Utilisation directe du hook
+- **Performance** - Optimisé par défaut
+- **TypeScript** - Excellent support TypeScript
+- **Flexible** - Peut utiliser des middlewares
+
+#### ❌ Inconvénients
+
+- **Moins mature** - Communauté plus petite que Redux
+- **DevTools** - Outils de debugging moins avancés
+- **Documentation** - Moins de ressources disponibles
+
+#### 💻 Exemple de Code
+
+```jsx
+// useMoviesStore.js
+const useMoviesStore = create((set, get) => ({
+  movies: [],
+  favorites: [],
+  
+  toggleFavorite: (movieId) => {
+    set((state) => ({
+      favorites: state.favorites.includes(movieId)
+        ? state.favorites.filter(id => id !== movieId)
+        : [...state.favorites, movieId]
+    }));
+  },
+  
+  isFavorite: (movieId) => {
+    return get().favorites.includes(movieId);
+  },
+}));
+
+// Utilisation dans un composant
+const { toggleFavorite, favorites } = useMoviesStore();
+```
+
+#### 📊 Métriques
+
+- **Lignes de code** : ~70 lignes (useMoviesStore.js)
+- **Bundle size** : ~1 KB (gzipped)
+- **Complexité** : ⭐⭐ (2/5)
+- **Performance** : ⭐⭐⭐⭐⭐ (5/5)
+
+---
+
+## 📊 Tableau Comparatif Détaillé
+
+| Critère | Context API | Redux Toolkit | Zustand |
+|---------|-------------|---------------|---------|
+| **Bundle Size** | 0 KB | ~15 KB | ~1 KB |
+| **Courbe d'apprentissage** | Facile | Difficile | Très facile |
+| **Boilerplate** | Moyen | Élevé | Faible |
+| **Performance** | Bonne | Excellente | Excellente |
+| **DevTools** | Basique | Excellent | Bon |
+| **TypeScript** | Bon | Excellent | Excellent |
+| **Middleware** | Non | Oui | Oui |
+| **Scalabilité** | Faible | Excellente | Bonne |
+| **Communauté** | Très large | Très large | Croissante |
+| **Cas d'usage idéal** | Petits projets | Grandes apps | Projets moyens |
+
+---
+
+## 🎨 Captures d'Écran
+
+### Démo de l'Application
+![Démo de l'application](./demo/film.gif)
+
+---
+
+## 🎬 API TMDb
+
+### Configuration
+
+L'application utilise l'API The Movie Database (TMDb) pour récupérer les données des films.
+
+- **Base URL** : `https://api.themoviedb.org/3`
+- **Clé API** : Stockée dans `.env`
+- **Documentation** : [TMDb API Docs](https://developers.themoviedb.org/3)
+
+### Endpoints Utilisés
+
+```javascript
+// Films populaires
+GET /movie/popular?api_key={API_KEY}&language=en-US&page=1
+
+// Recherche de films
+GET /search/movie?api_key={API_KEY}&query={QUERY}
+
+// Images
+https://image.tmdb.org/t/p/w342/{poster_path}
+```
+
+### Genres Disponibles
+
+- Action (28)
+- Adventure (12)
+- Animation (16)
+- Comedy (35)
+- Crime (80)
+- Documentary (99)
+- Drama (18)
+- Family (10751)
+- Fantasy (14)
+- Horror (27)
+- Romance (10749)
+- Science Fiction (878)
+- Thriller (53)
+- Et plus...
+
+---
+
+## 🚀 Fonctionnalités Avancées
+
+### Debouncing de la Recherche
+
+La recherche utilise un debouncing de 500ms pour éviter trop d'appels API :
+
+```javascript
+useEffect(() => {
+  const timer = setTimeout(() => {
+    if (searchQuery) {
+      searchMovies(searchQuery);
+    } else {
+      loadMovies();
+    }
+  }, 500);
+  
+  return () => clearTimeout(timer);
+}, [searchQuery]);
+```
+
+### Lazy Loading des Images
+
+Les images utilisent l'attribut `loading="lazy"` pour améliorer les performances :
+
+```jsx
+<img 
+  src={getPosterUrl(movie.poster_path)} 
+  alt={movie.title}
+  loading="lazy"
+/>
+```
+
+### Gestion des États
+
+- **Loading** : Spinner animé pendant le chargement
+- **Error** : Message d'erreur stylisé
+- **Empty** : Message quand aucun film n'est trouvé
+
+---
+
+## 🎓 Apprentissages Clés
+
+### Context API
+- Idéal pour les états simples et localisés
+- Attention aux re-renders inutiles
+- Utiliser `useMemo` et `useCallback` pour optimiser
+
+### Redux Toolkit
+- Excellente structure pour les grandes applications
+- Les slices simplifient beaucoup le code Redux
+- Les DevTools sont indispensables pour le debugging
+
+### Zustand
+- Le meilleur compromis simplicité/performance
+- Parfait pour les projets de taille moyenne
+- Très facile à migrer depuis Context API
+
+---
+
+## 📝 Recommandations
+
+### Quand utiliser Context API ?
+- Projets simples avec peu d'état global
+- Prototypes rapides
+- Applications avec peu de composants
+
+### Quand utiliser Redux Toolkit ?
+- Applications complexes avec beaucoup d'état
+- Besoin de middleware (logging, analytics)
+- Équipes importantes nécessitant une structure stricte
+- Applications nécessitant du time-travel debugging
+
+### Quand utiliser Zustand ?
+- Projets de taille moyenne
+- Besoin de simplicité avec de bonnes performances
+- Migration depuis Context API
+- Applications modernes avec TypeScript
+
+---
+
+## 👨‍💻 Auteur
+
+**Projet Comparatif - React State Management**
+
+Réalisé dans le cadre du cours MERN Stack
+
+---
+
+## 📄 Licence
+
+Ce projet est à des fins éducatives uniquement.
+
+---
+## 📚 Ressources Supplémentaires
+
+### Documentation Officielle
+- [React Context](https://react.dev/reference/react/createContext)
+- [Redux Toolkit](https://redux-toolkit.js.org/)
+- [Zustand](https://github.com/pmndrs/zustand)
+- [TMDb API](https://developers.themoviedb.org/3)
+
+### Tutoriels
+- [React State Management Guide](https://react.dev/learn/managing-state)
+- [Redux Toolkit Tutorial](https://redux-toolkit.js.org/tutorials/quick-start)
+- [Zustand Getting Started](https://docs.pmnd.rs/zustand/getting-started/introduction)
+
+---
+
+**🎬 Bon visionnage et bon codage ! 🚀**

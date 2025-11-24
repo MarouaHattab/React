@@ -1,16 +1,16 @@
 import Header from "./components-context/Header";
 import FilterBar from "./components-context/FilterBar";
-import CharacterGrid from "./components-context/CharacterGrid";
+import MovieGrid from "./components-context/MovieGrid";
 import FavoritesSidebar from "./components-context/FavoritesSidebar";
 
 function AppContext() {
   return (
-    <div>
+    <div className="app">
       <Header />
       <div className="main-container">
-        <div>
+        <div className="content-area">
           <FilterBar />
-          <CharacterGrid />
+          <MovieGrid />
         </div>
         <FavoritesSidebar />
       </div>

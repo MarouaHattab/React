@@ -1,35 +1,49 @@
-import { useCharacters } from "../context/CharactersContext";
+import { useMovies } from '../context/MoviesContext';
+import { getPosterUrl } from '../utils/tmdbApi';
 
 function FavoritesSidebar() {
-  const { getLikedCharacters, toggleLike } = useCharacters();
-  const likedCharacters = getLikedCharacters();
-  
+  const { getFavoriteMovies, toggleFavorite } = useMovies();
+  const favoriteMovies = getFavoriteMovies();
+
   return (
-    <div className="favorites-sidebar">
-      <h2>Mes Favoris ({likedCharacters.length})</h2>
-      {likedCharacters.length === 0 ? (
-        <p style={{ color: '#95a5a6' }}>Aucun favori</p>
-      ) : (
-        likedCharacters.map(character => (
-          <div key={character.id} className="favorite-item">
-            <img src={character.image} alt={character.name} />
-            <span>{character.name}</span>
-            <button 
-              onClick={() => toggleLike(character.id)} 
-              style={{
-                marginLeft: 'auto',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '20px'
-              }}
-            >
-              ❤️
-            </button>
+    <aside className="favorites-sidebar">
+      <div className="favorites-header">
+        <h2 className="favorites-title">
+          ⭐ Favorites
+          <span className="favorites-count">{favoriteMovies.length}</span>
+        </h2>
+      </div>
+      
+      <div className="favorites-list">
+        {favoriteMovies.length === 0 ? (
+          <div className="favorites-empty">
+            <p>No favorites yet!</p>
+            <p className="favorites-hint">Click the ☆ on any movie to add it here</p>
           </div>
-        ))
-      )}
-    </div>
+        ) : (
+          favoriteMovies.map(movie => (
+            <div key={movie.id} className="favorite-item">
+              <img
+                src={getPosterUrl(movie.poster_path, 'w185')}
+                alt={movie.title}
+                className="favorite-poster"
+              />
+              <div className="favorite-info">
+                <h4 className="favorite-title">{movie.title}</h4>
+                <p className="favorite-rating">⭐ {movie.vote_average?.toFixed(1)}</p>
+              </div>
+              <button
+                onClick={() => toggleFavorite(movie.id)}
+                className="remove-favorite-btn"
+                aria-label="Remove from favorites"
+              >
+                ✕
+              </button>
+            </div>
+          ))
+        )}
+      </div>
+    </aside>
   );
 }
 

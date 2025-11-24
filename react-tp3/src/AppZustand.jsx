@@ -1,16 +1,16 @@
 import Header from "./components-zustand/Header";
 import FilterBar from "./components-zustand/FilterBar";
-import CharacterGrid from "./components-zustand/CharacterGrid";
+import MovieGrid from "./components-zustand/MovieGrid";
 import FavoritesSidebar from "./components-zustand/FavoritesSidebar";
 
 function AppZustand() {
   return (
-    <div>
+    <div className="app">
       <Header />
       <div className="main-container">
-        <div>
+        <div className="content-area">
           <FilterBar />
-          <CharacterGrid />
+          <MovieGrid />
         </div>
         <FavoritesSidebar />
       </div>

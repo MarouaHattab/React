@@ -1,22 +1,60 @@
-import useCharactersStore from '../zustand/useCharactersStore';
+import { useEffect, useRef } from 'react';
+import useMoviesStore from '../zustand/useMoviesStore';
+import { GENRES } from '../utils/tmdbApi';
 
 function FilterBar() {
-  const filter = useCharactersStore(state => state.filter);
-  const setFilter = useCharactersStore(state => state.setFilter);
+  const { selectedGenre, searchQuery, setSelectedGenre, setSearchQuery, searchMovies, loadMovies } = useMoviesStore();
+  const searchTimeoutRef = useRef(null);
 
-  const filters = ['all', 'alive', 'dead', 'unknown'];
+  useEffect(() => {
+    // Clear previous timeout
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+
+    // Set new timeout for search
+    searchTimeoutRef.current = setTimeout(() => {
+      if (searchQuery) {
+        searchMovies(searchQuery);
+      } else {
+        loadMovies();
+      }
+    }, 500);
+
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
+  }, [searchQuery, searchMovies, loadMovies]);
 
   return (
     <div className="filter-bar">
-      {filters.map(f => (
-        <button
-          key={f}
-          className={`filter-btn ${filter === f ? 'active' : ''}`}
-          onClick={() => setFilter(f)}
+      <div className="search-box">
+        <input
+          type="text"
+          placeholder="🔍 Search movies..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="search-input"
+        />
+      </div>
+      
+      <div className="genre-filter">
+        <label className="filter-label">Filter by Genre:</label>
+        <select
+          value={selectedGenre || ''}
+          onChange={(e) => setSelectedGenre(e.target.value ? Number(e.target.value) : null)}
+          className="genre-select"
         >
-          {f.charAt(0).toUpperCase() + f.slice(1)}
-        </button>
-      ))}
+          <option value="">All Genres</option>
+          {GENRES.map(genre => (
+            <option key={genre.id} value={genre.id}>
+              {genre.name}
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
   );
 }

@@ -1,14 +1,13 @@
-import { useSelector } from 'react-redux';
-import { selectLikedIds } from '../redux/charactersSlice';
-
 function Header() {
-  const likedIds = useSelector(selectLikedIds);
-
   return (
     <header className="header">
-      <h1>Rick & Morty Characters (Redux)</h1>
-      <div className="likes-badge">
-        {likedIds.length} personnages likés
+      <div className="header-content">
+        <h1 className="header-title">
+          <span className="header-icon">🎬</span>
+          Movie Explorer
+          <span className="header-badge">Redux Toolkit</span>
+        </h1>
+        <p className="header-subtitle">Discover and save your favorite movies</p>
       </div>
     </header>
   );
