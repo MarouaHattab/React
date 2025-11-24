@@ -505,5 +505,3 @@ Ce projet est à des fins éducatives uniquement.
 - [Zustand Getting Started](https://docs.pmnd.rs/zustand/getting-started/introduction)
 
 ---
-
-**🎬 Bon visionnage et bon codage ! 🚀**
