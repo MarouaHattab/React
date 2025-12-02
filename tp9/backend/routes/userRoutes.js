@@ -10,6 +10,7 @@ const {
   getProfile,
   updateProfile,
 } = require('../controllers/profileController');
+const { getUserReviews } = require('../controllers/reviewController');
 const { protect } = require('../middleware/authMiddleware');
 
 // Routes pour les utilisateurs (toutes protégées par JWT)
@@ -25,4 +26,8 @@ router.route('/:userId/profile')
 // Route pour récupérer les cours d'un utilisateur - protégée par JWT
 router.route('/:userId/courses').get(protect, getUserCourses);
 
+// Route pour récupérer les reviews d'un utilisateur - protégée par JWT
+router.route('/:userId/reviews').get(protect, getUserReviews);
+
 module.exports = router;
+

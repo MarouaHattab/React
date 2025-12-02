@@ -59,7 +59,7 @@ const getCourseById = async (req, res) => {
 const enrollUserInCourse = async (req, res) => {
   try {
     const { courseId } = req.params;
-    const { userId } = req.body; // On suppose que l'ID de l'utilisateur est dans le body
+    const userId = req.userId; // Récupérer l'ID de l'utilisateur depuis le middleware protect
 
     const course = await Course.findById(courseId);
     const user = await User.findById(userId);

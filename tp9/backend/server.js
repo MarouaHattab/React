@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const courseRoutes = require('./routes/courseRoutes');
@@ -10,6 +11,12 @@ connectDB();
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+// CORS Configuration
+app.use(cors({
+    origin: 'http://localhost:5173', 
+    credentials: true 
+}));
 
 // Middleware
 app.use(express.json());

@@ -7,18 +7,24 @@ const Course = require('../models/Course');
 const addReview = async (req, res) => {
   try {
     const { courseId } = req.params;
-    const { rating, comment, userId } = req.body;
+    const { rating, comment } = req.body;
 
     const course = await Course.findById(courseId);
     if (!course) {
       return res.status(404).json({ message: 'Cours non trouvé.' });
     }
 
+    // Vérifier que l'utilisateur est inscrit au cours
+    const userId = req.userId;
+    if (!course.students.includes(userId)) {
+      return res.status(403).json({ message: 'Vous devez être inscrit au cours pour laisser un avis.' });
+    }
+
     const review = await Review.create({
       rating,
       comment,
       course: courseId, // Lier la critique au cours
-      user: userId,
+      user: userId, // Utiliser l'ID de l'utilisateur authentifié
     });
 
     res.status(201).json(review);
@@ -42,7 +48,23 @@ const getCourseReviews = async (req, res) => {
   }
 };
 
+// @desc    Récupérer toutes les critiques d'un utilisateur
+// @route   GET /api/users/:userId/reviews
+// @access  Private (JWT required)
+const getUserReviews = async (req, res) => {
+  try {
+    const reviews = await Review.find({ user: req.params.userId })
+      .populate('course', 'title instructor')
+      .populate('user', 'username email');
+
+    res.status(200).json(reviews);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   addReview,
   getCourseReviews,
+  getUserReviews,
 };
