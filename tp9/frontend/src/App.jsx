@@ -9,6 +9,8 @@ import CourseDetails from './pages/CourseDetails';
 import Profile from './pages/Profile';
 import ProfileEdit from './pages/ProfileEdit';
 import MyReviews from './pages/MyReviews';
+import CourseAnalysis from './pages/CourseAnalysis';
+import GenerateDescription from './pages/GenerateDescription';
 import NotFound from './pages/NotFound';
 
 function App() {
@@ -49,6 +51,24 @@ function App() {
           }
         />
         
+        <Route
+          path="/courses/:id/analysis"
+          element={
+            <ProtectedRoute>
+              <CourseAnalysis />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/generate-description"
+          element={
+            <ProtectedRoute>
+              <GenerateDescription />
+            </ProtectedRoute>
+          }
+        />
+
         {/* 404 - Must be last */}
         <Route path="*" element={<NotFound />} />
       </Routes>
