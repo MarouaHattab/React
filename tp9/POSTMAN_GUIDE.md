@@ -479,18 +479,502 @@ Créez une collection avec toutes ces requêtes organisées en dossiers:
 
 ---
 
-## ✅ Checklist
+## 🤖 AI Features (Powered by Gemini)
 
-- [ ] Backend démarré sur port 3000
-- [ ] MongoDB connecté
-- [ ] Compte créé via `/auth/register`
-- [ ] Token JWT obtenu
-- [ ] Token ajouté dans headers pour routes protégées
-- [ ] Au moins 10 cours créés (pour tester la pagination)
-- [ ] Inscription à quelques cours
-- [ ] Reviews ajoutées
-- [ ] Profil créé et modifié
+### 🔒 1. Analyser les Reviews d'un Cours (Protected)
+
+**Requête:**
+```
+POST http://localhost:3000/api/ai/analyze-reviews/:courseId
+```
+
+**Headers:**
+```
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN
+```
+
+**Description:** Génère un rapport d'analyse intelligent des reviews d'un cours
+
+**Pas de Body nécessaire**
+
+**Réponse Attendue (200 OK):**
+```json
+{
+  "success": true,
+  "data": {
+    "courseTitle": "Introduction à React",
+    "reviewCount": 5,
+    "analysis": "## Sentiment Général\nPositif - Les étudiants apprécient...\n\n## Note Moyenne Calculée\n4.2/5\n\n## Points Forts (Top 3)\n1. Explications claires\n2. Bon rythme\n3. Exemples pratiques\n\n## Points d'Amélioration (Top 3)\n1. Plus d'exercices\n2. Vidéos plus courtes\n3. Ajout de quiz\n\n## Recommandations pour l'Instructeur\n...\n\n## Résumé en une phrase\n..."
+  }
+}
+```
+
+**⚠️ Prérequis:** Le cours doit avoir au moins 1 review
 
 ---
 
-**🎉 Vous êtes prêt à tester toute l'API avec Postman!**
+### 🔒 2. Générer une Description de Cours (Protected)
+
+**Requête:**
+```
+POST http://localhost:3000/api/ai/generate-description
+```
+
+**Headers:**
+```
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN
+```
+
+**Body (JSON):**
+```json
+{
+  "title": "Python pour Data Science",
+  "instructor": "Dr. Marie Laurent",
+  "keywords": ["Python", "Machine Learning", "Pandas", "NumPy", "Visualisation"]
+}
+```
+
+**Exemple 2 - Cours de Design:**
+```json
+{
+  "title": "UI/UX Design Moderne",
+  "instructor": "Sophie Martin",
+  "keywords": ["Figma", "Design System", "Prototypage", "User Research"]
+}
+```
+
+**Exemple 3 - Cours de Développement:**
+```json
+{
+  "title": "Microservices avec Node.js",
+  "instructor": "Thomas Dubois",
+  "keywords": ["Microservices", "Docker", "Kubernetes", "API Gateway", "Event-Driven"]
+}
+```
+
+**Réponse Attendue (200 OK):**
+```json
+{
+  "success": true,
+  "data": {
+    "description": "Plongez dans l'univers passionnant de la Data Science avec Python ! Dans ce cours complet, vous maîtriserez les bibliothèques essentielles comme Pandas et NumPy pour manipuler et analyser des données avec aisance.\n\nVous apprendrez à créer des visualisations percutantes et à construire vos premiers modèles de Machine Learning. Que vous soyez débutant curieux ou professionnel cherchant à élargir ses compétences, ce cours vous donnera les outils pour transformer les données en insights actionables.\n\nRejoignez-nous dès aujourd'hui et commencez votre voyage vers l'expertise en Data Science !"
+  }
+}
+```
+
+---
+
+### 🔓 3. Suggérer des Cours Similaires (Public)
+
+**Requête:**
+```
+POST http://localhost:3000/api/ai/similar-courses/:courseId
+```
+
+**Headers:**
+```
+Content-Type: application/json
+```
+
+**Pas de Body nécessaire**
+
+**Réponse Attendue (200 OK):**
+```json
+{
+  "success": true,
+  "data": {
+    "referenceCourse": "Introduction à React",
+    "suggestions": "1. Cours 7 (React Router & Navigation) - Ce cours approfondit un aspect spécifique de React en enseignant la navigation, ce qui est une suite logique après avoir maîtrisé les bases de React.\n\n2. Cours 8 (Redux State Management) - Redux est un outil essentiel pour gérer l'état dans les applications React complexes, rendant ce cours très pertinent pour ceux qui veulent aller plus loin avec React.\n\n3. Cours 1 (Node.js Avancé) - Node.js et React sont souvent utilisés ensemble dans le développement full-stack moderne, ce qui rend ces technologies complémentaires.",
+    "availableCourses": [
+      { "id": "657...", "title": "Node.js Avancé" },
+      { "id": "658...", "title": "Redux State Management" }
+    ]
+  }
+}
+```
+
+---
+
+### 🔒 4. Générer une Bio Professionnelle (Protected)
+
+**Requête:**
+```
+POST http://localhost:3000/api/ai/generate-bio
+```
+
+**Headers:**
+```
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN
+```
+
+**Body - Exemple 1 (Développeur):**
+```json
+{
+  "interests": "Développement web full-stack, React, Node.js, architecture cloud",
+  "experience": "5 ans d'expérience en développement d'applications web",
+  "goals": "Devenir architecte solutions et contribuer à des projets open-source"
+}
+```
+
+**Body - Exemple 2 (Designer):**
+```json
+{
+  "interests": "UI/UX Design, Design Systems, Accessibilité, Motion Design",
+  "experience": "3 ans en tant que designer produit dans des startups tech",
+  "goals": "Créer des expériences utilisateur inclusives et mémorables"
+}
+```
+
+**Body - Exemple 3 (Data Scientist):**
+```json
+{
+  "interests": "Machine Learning, Data Visualization, Python, Statistics",
+  "experience": "Diplômé en sciences des données, 2 ans d'expérience en analyse de données",
+  "goals": "Résoudre des problèmes business complexes avec l'IA"
+}
+```
+
+**Body - Exemple 4 (Étudiant):**
+```json
+{
+  "interests": "Programmation, jeux vidéo, intelligence artificielle",
+  "experience": "Étudiant en informatique passionné par le code"
+}
+```
+
+**Réponse Attendue (200 OK):**
+```json
+{
+  "success": true,
+  "data": {
+    "bio": "Je suis un développeur full-stack passionné avec 5 ans d'expérience dans la création d'applications web modernes utilisant React et Node.js. Mon expertise s'étend à l'architecture cloud et je suis toujours à la recherche de nouvelles technologies pour améliorer mes compétences. Mon objectif est de devenir architecte solutions tout en contribuant activement à la communauté open-source. J'aime partager mes connaissances et collaborer sur des projets innovants."
+  }
+}
+```
+
+---
+
+### 🔒 5. Obtenir des Insights sur la Plateforme (Protected - Admin)
+
+**Requête:**
+```
+GET http://localhost:3000/api/ai/platform-insights
+```
+
+**Headers:**
+```
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN
+```
+
+**Pas de Body nécessaire**
+
+**Réponse Attendue (200 OK):**
+```json
+{
+  "success": true,
+  "data": {
+    "stats": {
+      "totalCourses": 12,
+      "totalReviews": 25,
+      "averageRating": "4.32"
+    },
+    "insights": "## Santé Générale de la Plateforme\nLa plateforme est en bonne santé avec une note moyenne de 4.32/5, indiquant une satisfaction élevée des étudiants.\n\n## Tendances Observées\n1. Les cours de développement web (React, Node.js) génèrent le plus d'engagement\n2. Les cours d'introduction obtiennent de meilleures notes que les cours avancés\n3. Les étudiants apprécient particulièrement les exemples pratiques\n\n## Cours Populaires\n- Introduction à React (8 reviews)\n- Node.js Avancé (6 reviews)\n- JavaScript ES6+ (5 reviews)\n\n## Recommandations Stratégiques\n1. Créer plus de contenu intermédiaire pour combler le gap entre débutant et avancé\n2. Standardiser l'inclusion d'exemples pratiques dans tous les cours\n3. Développer une série de cours complémentaires pour créer des parcours d'apprentissage complets"
+  }
+}
+```
+
+---
+
+## 🧪 Workflow Complet de Test AI
+
+### Prérequis
+1. Au moins 10-12 cours créés
+2. Au moins 3-5 reviews sur différents cours
+3. Token JWT valide
+
+### Scénario de Test Complet
+
+#### **Étape 1: Créer des Reviews pour Tester l'Analyse**
+```
+POST /api/courses/{courseId1}/reviews
+Body:
+{
+  "rating": 5,
+  "comment": "Excellent cours! Les explications sont très claires et les exemples pratiques."
+}
+
+POST /api/courses/{courseId1}/reviews
+Body:
+{
+  "rating": 4,
+  "comment": "Très bon contenu, mais j'aurais aimé plus d'exercices."
+}
+
+POST /api/courses/{courseId1}/reviews
+Body:
+{
+  "rating": 5,
+  "comment": "Le meilleur cours sur React que j'ai suivi. L'instructeur maîtrise vraiment son sujet."
+}
+```
+
+#### **Étape 2: Analyser les Reviews**
+```
+POST /api/ai/analyze-reviews/{courseId1}
+```
+→ Obtenir un rapport d'analyse complet
+
+#### **Étape 3: Générer une Description**
+```
+POST /api/ai/generate-description
+Body:
+{
+  "title": "Advanced TypeScript Patterns",
+  "instructor": "John Doe",
+  "keywords": ["TypeScript", "Design Patterns", "Advanced Types", "Generics"]
+}
+```
+
+#### **Étape 4: Trouver des Cours Similaires**
+```
+POST /api/ai/similar-courses/{courseId1}
+```
+
+#### **Étape 5: Générer une Bio**
+```
+POST /api/ai/generate-bio
+Body:
+{
+  "interests": "Full-stack development, AI, Cloud Computing",
+  "experience": "4 years as software engineer",
+  "goals": "Build scalable applications"
+}
+```
+
+#### **Étape 6: Consulter les Insights Globaux**
+```
+GET /api/ai/platform-insights
+```
+
+---
+
+## 📦 Collection Postman Complète - Structure Suggérée
+
+```
+📁 MERN TP9 - Complete API
+  📁 1. Authentication
+    - 1.1 Register
+    - 1.2 Login
+  
+  📁 2. Courses
+    - 2.1 Get All Courses
+    - 2.2 Get Course by ID
+    - 2.3 Create Course
+    - 2.4 Enroll in Course
+    - 2.5 Get Course Students
+  
+  📁 3. Reviews
+    - 3.1 Get Course Reviews
+    - 3.2 Add Review to Course
+    - 3.3 Get My Reviews
+  
+  📁 4. User Profile
+    - 4.1 Get All Users
+    - 4.2 Get User by ID
+    - 4.3 Get My Courses
+    - 4.4 Create Profile
+    - 4.5 Get Profile
+    - 4.6 Update Profile
+  
+  📁 5. AI Features 🤖
+    - 5.1 Analyze Course Reviews
+    - 5.2 Generate Course Description
+    - 5.3 Suggest Similar Courses
+    - 5.4 Generate Professional Bio
+    - 5.5 Get Platform Insights
+```
+
+---
+
+## 🎨 Exemples de Données pour Tests Complets
+
+### Données de Test - Reviews Variées
+
+**Review Positive:**
+```json
+{
+  "rating": 5,
+  "comment": "Ce cours a transformé ma compréhension de React. L'instructeur explique les concepts complexes de manière simple et les exercices sont excellents."
+}
+```
+
+**Review Neutre:**
+```json
+{
+  "rating": 3,
+  "comment": "Le contenu est correct mais j'attendais plus d'exemples concrets. Bon pour débuter."
+}
+```
+
+**Review Constructive:**
+```json
+{
+  "rating": 4,
+  "comment": "Très bon cours dans l'ensemble. J'aurais apprécié des quiz à la fin de chaque section et peut-être un projet final plus ambitieux."
+}
+```
+
+**Review Négative:**
+```json
+{
+  "rating": 2,
+  "comment": "Le rythme est trop rapide pour les débutants. Certains concepts mériteraient plus d'explications."
+}
+```
+
+**Review Enthousiaste:**
+```json
+{
+  "rating": 5,
+  "comment": "Incroyable! Non seulement j'ai appris React, mais j'ai aussi compris les meilleures pratiques du développement moderne. Hautement recommandé!"
+}
+```
+
+### Données de Test - Cours Variés pour AI
+
+**Cours 1: IA et Machine Learning**
+```json
+{
+  "title": "Intelligence Artificielle pour Débutants",
+  "description": "Découvrez les fondamentaux de l'IA et du Machine Learning",
+  "instructor": "Dr. Alice Chen"
+}
+```
+
+**Cours 2: Cybersécurité**
+```json
+{
+  "title": "Cybersécurité Essentielles",
+  "description": "Protégez vos applications contre les menaces modernes",
+  "instructor": "Marc Dupont"
+}
+```
+
+**Cours 3: DevOps**
+```json
+{
+  "title": "DevOps avec CI/CD",
+  "description": "Automatisez vos déploiements et améliorez votre workflow",
+  "instructor": "Sarah Johnson"
+}
+```
+
+---
+
+## ✅ Checklist Complète
+
+**Backend Setup:**
+- [ ] Backend démarré sur port 3000
+- [ ] MongoDB connecté
+- [ ] Variables d'environnement configurées (GEMINI_API_KEY)
+
+**Authentification:**
+- [ ] Compte créé via `/auth/register`
+- [ ] Token JWT obtenu et sauvegardé
+- [ ] Token testé sur route protégée
+
+**Données de Base:**
+- [ ] Au moins 12 cours créés (pour tester la pagination et les suggestions)
+- [ ] Au moins 5 utilisateurs créés
+- [ ] Inscription à plusieurs cours
+- [ ] Au moins 10 reviews ajoutées sur différents cours
+- [ ] Profils créés et modifiés
+
+**Tests AI Features:**
+- [ ] Analyse de reviews testée sur un cours avec plusieurs avis
+- [ ] Génération de description testée avec différents keywords
+- [ ] Suggestions de cours similaires testées
+- [ ] Génération de bio testée avec différents profils
+- [ ] Insights plateforme consultés
+
+**Postman Configuration:**
+- [ ] Environment variables configurées (jwt_token, user_id, base_url)
+- [ ] Collection organisée par fonctionnalités
+- [ ] Tests automatiques configurés pour login
+
+---
+
+## 🔧 Configuration Postman - Variables d'Environnement
+
+Créez un environnement `MERN TP9 - Dev` avec:
+
+| Variable | Initial Value | Current Value |
+|----------|---------------|---------------|
+| `base_url` | `http://localhost:3000/api` | `http://localhost:3000/api` |
+| `jwt_token` | `` | (auto-filled after login) |
+| `user_id` | `` | (auto-filled after login) |
+| `test_course_id` | `` | (manually set) |
+
+### Script de Test Auto pour Login
+
+Dans l'onglet **Tests** de votre requête `POST /api/auth/login`:
+
+```javascript
+// Sauvegarder automatiquement le token et user_id
+if (pm.response.code === 200) {
+    const response = pm.response.json();
+    pm.environment.set("jwt_token", response.token);
+    pm.environment.set("user_id", response.user.id);
+    console.log("✅ Token saved:", response.token);
+}
+```
+
+Dans l'onglet **Tests** de votre requête `POST /api/auth/register`:
+
+```javascript
+// Sauvegarder automatiquement le token et user_id
+if (pm.response.code === 201) {
+    const response = pm.response.json();
+    pm.environment.set("jwt_token", response.token);
+    pm.environment.set("user_id", response.user._id);
+    console.log("✅ User registered and token saved");
+}
+```
+
+---
+
+## 🚨 Erreurs Courantes - AI Features
+
+### 400 Bad Request - "Aucune review disponible"
+**Cause:** Le cours n'a aucune review  
+**Solution:** Ajoutez au moins 1 review au cours avant l'analyse
+
+### 400 Bad Request - "Titre et instructeur requis"
+**Cause:** Body incomplet pour generate-description  
+**Solution:** Vérifiez que `title` et `instructor` sont présents
+
+### 500 Server Error - AI Features
+**Cause:** API Key Gemini manquante ou invalide  
+**Solution:** Vérifiez `.env` → `GEMINI_API_KEY=your_key_here`
+
+### 404 Not Found - "Cours non trouvé"
+**Cause:** courseId invalide  
+**Solution:** Vérifiez que l'ID du cours existe (utilisez GET /api/courses)
+
+---
+
+**🎉 Vous êtes maintenant prêt à tester TOUTE l'API, y compris les fonctionnalités IA avec Postman!**
+
+---
+
+## 📝 Notes Importantes
+
+1. **Gemini API**: Les fonctionnalités IA nécessitent une clé API Gemini valide dans votre `.env`
+2. **Performance**: Les requêtes AI peuvent prendre 2-5 secondes (appel à l'API Gemini)
+3. **Qualité**: Plus vous avez de reviews/cours, meilleure sera la qualité des insights IA
+4. **Rate Limiting**: L'API Gemini peut avoir des limites de taux, espacez vos tests
+5. **Langue**: Les réponses IA sont en français par défaut selon les prompts

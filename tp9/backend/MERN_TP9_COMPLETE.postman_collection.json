@@ -1,0 +1,497 @@
+{
+  "info": {
+    "name": "MERN TP9 - Complete API with AI",
+    "_postman_id": "mern-tp9-complete-collection",
+    "description": "Collection complète pour tester l'API de gestion de cours avec fonctionnalités IA (Gemini)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{jwt_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.environment.set('jwt_token', response.token);",
+                  "    pm.environment.set('user_id', response.user._id);",
+                  "    console.log('✅ User registered and token saved');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"email\": \"admin@example.com\",\n  \"password\": \"password123\",\n  \"confirmPassword\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.environment.set('jwt_token', response.token);",
+                  "    pm.environment.set('user_id', response.user.id);",
+                  "    console.log('✅ Token saved:', response.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "2. Courses",
+      "item": [
+        {
+          "name": "Get All Courses",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/courses",
+              "host": ["{{base_url}}"],
+              "path": ["courses"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Course by ID",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/courses/{{courseId}}",
+              "host": ["{{base_url}}"],
+              "path": ["courses", "{{courseId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Course",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.environment.set('courseId', response._id);",
+                  "    console.log('✅ Course created with ID:', response._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Introduction à React\",\n  \"description\": \"Apprenez les bases de React, les composants, le state et les props\",\n  \"instructor\": \"John Doe\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/courses",
+              "host": ["{{base_url}}"],
+              "path": ["courses"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Enroll in Course",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{base_url}}/courses/{{courseId}}/enroll",
+              "host": ["{{base_url}}"],
+              "path": ["courses", "{{courseId}}", "enroll"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Course Students",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/courses/{{courseId}}/students",
+              "host": ["{{base_url}}"],
+              "path": ["courses", "{{courseId}}", "students"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "3. Reviews",
+      "item": [
+        {
+          "name": "Get Course Reviews",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/courses/{{courseId}}/reviews",
+              "host": ["{{base_url}}"],
+              "path": ["courses", "{{courseId}}", "reviews"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add Review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 5,\n  \"comment\": \"Excellent cours! Les explications sont très claires et les exemples pratiques.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/courses/{{courseId}}/reviews",
+              "host": ["{{base_url}}"],
+              "path": ["courses", "{{courseId}}", "reviews"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Reviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/{{user_id}}/reviews",
+              "host": ["{{base_url}}"],
+              "path": ["users", "{{user_id}}", "reviews"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "4. User Profile",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users",
+              "host": ["{{base_url}}"],
+              "path": ["users"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/{{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["users", "{{user_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Courses",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/{{user_id}}/courses",
+              "host": ["{{base_url}}"],
+              "path": ["users", "{{user_id}}", "courses"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bio\": \"Développeur passionné par les nouvelles technologies\",\n  \"website\": \"https://monsite.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/{{user_id}}/profile",
+              "host": ["{{base_url}}"],
+              "path": ["users", "{{user_id}}", "profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/{{user_id}}/profile",
+              "host": ["{{base_url}}"],
+              "path": ["users", "{{user_id}}", "profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bio\": \"Développeur Full Stack avec 5 ans d'expérience\",\n  \"website\": \"https://nouveau-site.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/{{user_id}}/profile",
+              "host": ["{{base_url}}"],
+              "path": ["users", "{{user_id}}", "profile"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "5. AI Features 🤖",
+      "item": [
+        {
+          "name": "Analyze Course Reviews",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{base_url}}/ai/analyze-reviews/{{courseId}}",
+              "host": ["{{base_url}}"],
+              "path": ["ai", "analyze-reviews", "{{courseId}}"]
+            },
+            "description": "Generate an AI-powered analysis report of all reviews for a specific course. Requires at least 1 review."
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Course Description",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Python pour Data Science\",\n  \"instructor\": \"Dr. Marie Laurent\",\n  \"keywords\": [\"Python\", \"Machine Learning\", \"Pandas\", \"NumPy\", \"Visualisation\"]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/ai/generate-description",
+              "host": ["{{base_url}}"],
+              "path": ["ai", "generate-description"]
+            },
+            "description": "Generate an attractive and professional course description using AI based on title, instructor, and keywords."
+          },
+          "response": []
+        },
+        {
+          "name": "Suggest Similar Courses",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{base_url}}/ai/similar-courses/{{courseId}}",
+              "host": ["{{base_url}}"],
+              "path": ["ai", "similar-courses", "{{courseId}}"]
+            },
+            "description": "Get AI-powered recommendations for similar courses based on content analysis."
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Professional Bio",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"interests\": \"Développement web full-stack, React, Node.js, architecture cloud\",\n  \"experience\": \"5 ans d'expérience en développement d'applications web\",\n  \"goals\": \"Devenir architecte solutions et contribuer à des projets open-source\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/ai/generate-bio",
+              "host": ["{{base_url}}"],
+              "path": ["ai", "generate-bio"]
+            },
+            "description": "Generate a professional bio based on interests, experience, and goals using AI."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Platform Insights",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/ai/platform-insights",
+              "host": ["{{base_url}}"],
+              "path": ["ai", "platform-insights"]
+            },
+            "description": "Get AI-powered insights about the overall platform health, trends, and recommendations."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    },
+    {
+      "key": "jwt_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "user_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "courseId",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

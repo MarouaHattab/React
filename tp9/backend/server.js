@@ -5,6 +5,7 @@ const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const courseRoutes = require('./routes/courseRoutes');
 const authRoutes = require('./routes/authRoutes');
+const aiRoutes = require('./routes/aiRoutes');
 
 // Connexion à la base de données
 connectDB();
@@ -30,6 +31,9 @@ app.use('/api/courses', courseRoutes);
 app.get('/', (req, res) => {
   res.json({ message: 'API MERN TP5 - Gestion de cours' });
 });
+
+// Après les autres routes
+app.use('/api/ai', aiRoutes);
 
 app.use('/api/auth', authRoutes);
 
