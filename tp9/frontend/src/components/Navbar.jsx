@@ -10,25 +10,38 @@ function Navbar() {
       padding: '15px 30px',
       display: 'flex',
       justifyContent: 'space-between',
-      alignItems: 'center'
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      gap: '15px'
     }}>
-      <div style={{ display: 'flex', gap: '20px' }}>
-        <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>
-          Accueil
+      <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+        <Link to="/" style={{ color: 'white', textDecoration: 'none', fontWeight: 'bold' }}>
+          🎓 Accueil
         </Link>
         <Link to="/courses" style={{ color: 'white', textDecoration: 'none' }}>
-          Cours
+          📚 Cours
+        </Link>
+        <Link to="/chatbot" style={{ color: 'white', textDecoration: 'none' }}>
+          💬 Chatbot
         </Link>
       </div>
 
-      <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+      <div style={{ display: 'flex', gap: '15px', alignItems: 'center', flexWrap: 'wrap' }}>
         {isAuthenticated ? (
           <>
+            <Link to="/personalized-courses" style={{ color: 'white', textDecoration: 'none' }}>
+              🎯 Cours Recommandés
+            </Link>
+            {user.role === 'admin' && (
+              <Link to="/admin-dashboard" style={{ color: 'white', textDecoration: 'none' }}>
+                📊 Dashboard
+              </Link>
+            )}
             <Link to="/profile" style={{ color: 'white', textDecoration: 'none' }}>
-              Profil ({user.username})
+              👤 Profil ({user.username})
             </Link>
             <Link to="/my-reviews" style={{ color: 'white', textDecoration: 'none' }}>
-              Mes Reviews
+              ⭐ Mes Reviews
             </Link>
             <button
               onClick={logout}

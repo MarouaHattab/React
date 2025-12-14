@@ -121,7 +121,7 @@ function CourseDetails() {
           marginTop: '20px',
           marginLeft: '10px',
           padding: '15px 30px',
-          backgroundColor: '#9b59b6',
+          backgroundColor: '#3498db',
           color: 'white',
           textDecoration: 'none',
           borderRadius: '5px',
@@ -129,6 +129,23 @@ function CourseDetails() {
         }}
       >
         Voir l'Analyse IA
+      </Link>
+
+      <Link
+        to={`/courses/${id}/quiz`}
+        style={{
+          display: 'inline-block',
+          marginTop: '20px',
+          marginLeft: '10px',
+          padding: '15px 30px',
+          backgroundColor: '#3498db',
+          color: 'white',
+          textDecoration: 'none',
+          borderRadius: '5px',
+          fontSize: '16px'
+        }}
+      >
+        🎯 Quiz IA
       </Link>
 
       <h2 style={{ marginTop: '40px' }}>Avis des étudiants</h2>

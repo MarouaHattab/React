@@ -468,6 +468,95 @@
             "description": "Get AI-powered insights about the overall platform health, trends, and recommendations."
           },
           "response": []
+        },
+        {
+          "name": "Chatbot - Ask Question",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question\": \"Quels cours recommandez-vous pour un débutant en programmation ?\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/ai/chatbot",
+              "host": ["{{base_url}}"],
+              "path": ["ai", "chatbot"]
+            },
+            "description": "Ask the AI chatbot a question about courses or the platform. Optionally include courseId for context-specific answers."
+          },
+          "response": []
+        },
+        {
+          "name": "Chatbot - Course Specific",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question\": \"Ce cours est-il adapté aux débutants ?\",\n  \"courseId\": \"{{courseId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/ai/chatbot",
+              "host": ["{{base_url}}"],
+              "path": ["ai", "chatbot"]
+            },
+            "description": "Ask the AI chatbot a question about a specific course."
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Quiz",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numberOfQuestions\": 5,\n  \"difficulty\": \"moyen\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/ai/generate-quiz/{{courseId}}",
+              "host": ["{{base_url}}"],
+              "path": ["ai", "generate-quiz", "{{courseId}}"]
+            },
+            "description": "Generate an interactive quiz with multiple choice questions based on course content. Difficulty options: facile, moyen, difficile"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Personalized Course Suggestions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/ai/personalized-courses/{{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["ai", "personalized-courses", "{{user_id}}"]
+            },
+            "description": "Get AI-powered personalized course recommendations based on user's enrolled courses and profile."
+          },
+          "response": []
         }
       ]
     }

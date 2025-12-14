@@ -11,6 +11,10 @@ import ProfileEdit from './pages/ProfileEdit';
 import MyReviews from './pages/MyReviews';
 import CourseAnalysis from './pages/CourseAnalysis';
 import GenerateDescription from './pages/GenerateDescription';
+import AdminDashboard from './pages/AdminDashboard';
+import Chatbot from './pages/Chatbot';
+import CourseQuiz from './pages/CourseQuiz';
+import PersonalizedCourses from './pages/PersonalizedCourses';
 import NotFound from './pages/NotFound';
 
 function App() {
@@ -23,6 +27,9 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/courses" element={<Courses />} />
         <Route path="/courses/:id" element={<CourseDetails />} />
+        
+        {/* Chatbot - Public */}
+        <Route path="/chatbot" element={<Chatbot />} />
         
         <Route
           path="/profile"
@@ -61,10 +68,37 @@ function App() {
         />
 
         <Route
+          path="/courses/:id/quiz"
+          element={
+            <ProtectedRoute>
+              <CourseQuiz />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/generate-description"
           element={
             <ProtectedRoute>
               <GenerateDescription />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin-dashboard"
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/personalized-courses"
+          element={
+            <ProtectedRoute>
+              <PersonalizedCourses />
             </ProtectedRoute>
           }
         />
